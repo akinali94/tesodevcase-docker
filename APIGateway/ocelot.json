@@ -1,0 +1,140 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/Customer/IsWorking",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Customer/IsWorking",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Customer/Create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Customer/Create",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Customer/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Customer/{id}",
+      "UpstreamHttpMethod": ["Patch", "Delete", "Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Customer/GetAll",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Customer/GetAll",
+      "UpstreamHttpMethod": ["Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Customer/Validate/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Customer/Validate/{id}",
+      "UpstreamHttpMethod": ["Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Order/IsWorking",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Order/IsWorking",
+      "UpstreamHttpMethod": ["Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Order/Create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8081
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Order/Create",
+      "UpstreamHttpMethod": ["Post"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Order/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Order/{id}",
+      "UpstreamHttpMethod": ["Patch", "Delete", "Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Order/GetAll",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Order/GetAll",
+      "UpstreamHttpMethod": ["Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Order/Customer/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Order/Customer/{id}",
+      "UpstreamHttpMethod": ["Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Order/ChangeStatus",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts" : [
+        {
+          "Host": "localhost",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/gw/Order/ChangeStatus",
+      "UpstreamHttpMethod": ["Patch"]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:8080"
+  }
+}
+

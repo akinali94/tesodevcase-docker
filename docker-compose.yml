@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - mynetwork
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: broker
+    container_name: broker
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+      - "9101:9101"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+    networks:
+      - mynetwork
+  
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mynetwork
+  
+  
+  customerservice:
+    build:
+      context: ./CustomerService
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+#    depends_on:
+#      - mongodb
+    networks:
+      - mynetwork
+
+  orderservice:
+    build:
+      context: ./OrderService
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+#    depends_on:
+#      - customerservice
+#      - kafka
+#      - mongodb
+    environment:
+      - KAFKA_BROKER=kafka:9092  
+      - CUSTOMERSERVICE_URL=http://customerservice/api/v1/Customer/Validate  
+    networks:
+      - mynetwork
+  
+  consumerauditservice:
+    build:
+      context: ./ConsumerAuditService
+      dockerfile: Dockerfile
+    ports:
+      - "9099:9099"
+#    depends_on:
+#      - kafka
+#      - mongodb
+    environment:
+      - KAFKA_BROKER=kafka:9092
+    networks:
+      - mynetwork
+
+  apigateway:
+    build:
+      context: ./APIGateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+#    depends_on:
+#      - customerservice
+#      - orderservice
+    networks:
+      - mynetwork
+
+    
+#  kafka:
+#    image: apache/kafka
+#    ports:
+#      - "9092:9092"
+#    environment:
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9099
+#    
+#    depends_on:
+#      - zookeeper
+#    networks:
+#      - mynetwork
+  
+volumes:
+  mongo-data:
+
+networks:
+  mynetwork:
+    driver: bridge

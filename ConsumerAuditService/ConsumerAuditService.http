@@ -1,0 +1,6 @@
+@ConsumerAuditService_HostAddress = http://localhost:5206
+
+GET {{ConsumerAuditService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
